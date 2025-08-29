@@ -1,0 +1,209 @@
+.workflow-builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.builder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.builder-header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.save-btn, .execute-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #5a6268;
+}
+
+.execute-btn {
+  background: #007bff;
+  color: white;
+}
+
+.execute-btn:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.execute-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.builder-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.flow-container {
+  flex: 1;
+  height: calc(100vh - 80px);
+}
+
+/* React Flow customizations */
+.react-flow__node {
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+}
+
+.react-flow__node.selected {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.react-flow__handle {
+  background: #007bff;
+  border: 2px solid white;
+  width: 10px;
+  height: 10px;
+}
+
+.react-flow__edge-path {
+  stroke: #007bff;
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #0056b3;
+  stroke-width: 3;
+}
+
+.react-flow__controls {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls button {
+  border: none;
+  background: transparent;
+  color: #333;
+}
+
+.react-flow__controls button:hover {
+  background: #f8f9fa;
+}
+
+.react-flow__minimap {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Node specific styles */
+.node-content {
+  padding: 1rem;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.node-icon {
+  margin-right: 0.5rem;
+  color: #007bff;
+}
+
+.node-title {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.node-field {
+  margin-bottom: 0.75rem;
+}
+
+.node-field:last-child {
+  margin-bottom: 0;
+}
+
+.node-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+.node-input, .node-textarea, .node-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+.node-input:focus, .node-textarea:focus, .node-select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.node-textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.node-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.node-checkbox {
+  margin: 0;
+}
+
+/* Animation for node creation */
+.react-flow__node {
+  animation: nodeAppear 0.3s ease-out;
+}
+
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
