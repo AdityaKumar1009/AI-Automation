@@ -19,66 +19,45 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
   const [temperature, setTemperature] = useState(data.temperature || 0.7);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const handleModelChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newModel = event.target.value;
+  const handleModelChange = useCallback((newModel: string) => {
     setModel(newModel);
-    if (data) {
-      data.model = newModel;
-    }
-    // Blur the select element to prevent it from sticking to cursor
-    event.target.blur();
-    // Stop event propagation to prevent interference with React Flow
-    event.stopPropagation();
+    if (data) data.model = newModel;
   }, [data]);
 
   const handlePromptChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newPrompt = event.target.value;
     setCustomPrompt(newPrompt);
-    if (data) {
-      data.customPrompt = newPrompt;
-    }
-    // Stop event propagation
+    if (data) data.customPrompt = newPrompt;
     event.stopPropagation();
   }, [data]);
 
   const handleWebSearchToggle = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.checked;
     setUseWebSearch(newValue);
-    if (data) {
-      data.useWebSearch = newValue;
-    }
-    // Stop event propagation
+    if (data) data.useWebSearch = newValue;
     event.stopPropagation();
   }, [data]);
 
   const handleTemperatureChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newTemp = parseFloat(event.target.value);
     setTemperature(newTemp);
-    if (data) {
-      data.temperature = newTemp;
-    }
-    // Stop event propagation
+    if (data) data.temperature = newTemp;
     event.stopPropagation();
   }, [data]);
 
   const handleApiKeyChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newApiKey = event.target.value;
     setApiKey(newApiKey);
-    if (data) {
-      data.apiKey = newApiKey;
-    }
-    // Stop event propagation
+    if (data) data.apiKey = newApiKey;
     event.stopPropagation();
   }, [data]);
 
   const handleAdvancedSettingsToggle = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setShowAdvanced(!showAdvanced);
-    // Stop event propagation to prevent node dragging
     event.stopPropagation();
   }, [showAdvanced]);
 
   const modelOptions = [
-    { value: '', label: 'Select a model...' },
     { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' },
     { value: 'gpt-4', label: 'GPT-4' },
     { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
@@ -102,30 +81,43 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
         id="context-input"
         style={{ background: '#28a745', top: '70%' }}
       />
-      
+
       <div className="node-header">
         <Brain className="node-icon" size={16} />
         <h3 className="node-title">LLM Engine</h3>
       </div>
-      
+
+      {/* Model selector as buttons */}
       <div className="node-field">
-        <label className="node-label" htmlFor={`model-${id}`}>
-          AI Model:
-        </label>
-        <select
-          id={`model-${id}`}
-          className="node-select"
-          value={model}
-          onChange={handleModelChange}
+        <label className="node-label">AI Model:</label>
+        <div 
+          className="node-model-options" 
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}
         >
           {modelOptions.map(option => (
-            <option key={option.value} value={option.value}>
+            <button
+              key={option.value}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleModelChange(option.value);
+              }}
+              style={{
+                padding: '0.35rem 0.75rem',
+                borderRadius: '8px',
+                border: model === option.value ? '2px solid #007bff' : '1px solid #ccc',
+                background: model === option.value ? '#e6f0ff' : '#fff',
+                cursor: 'pointer',
+                fontSize: '0.8rem'
+              }}
+            >
               {option.label}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
+      {/* API Key input */}
       <div className="node-field">
         <label className="node-label" htmlFor={`apikey-${id}`}>
           API Key:
@@ -136,6 +128,7 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
           className="node-input"
           value={apiKey}
           onChange={handleApiKeyChange}
+          onMouseDown={(e) => e.stopPropagation()}
           placeholder="Enter your API key..."
           style={{
             width: '100%',
@@ -147,6 +140,7 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
         />
       </div>
 
+      {/* Custom prompt */}
       <div className="node-field">
         <label className="node-label" htmlFor={`prompt-${id}`}>
           Custom System Prompt (Optional):
@@ -156,11 +150,13 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
           className="node-textarea"
           value={customPrompt}
           onChange={handlePromptChange}
+          onMouseDown={(e) => e.stopPropagation()}
           placeholder="You are a helpful AI assistant..."
           rows={3}
         />
       </div>
 
+      {/* Web search toggle */}
       <div className="node-field">
         <div className="node-checkbox-wrapper">
           <input
@@ -169,6 +165,7 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
             className="node-checkbox"
             checked={useWebSearch}
             onChange={handleWebSearchToggle}
+            onMouseDown={(e) => e.stopPropagation()}
           />
           <label htmlFor={`websearch-${id}`} className="node-label" style={{ margin: 0 }}>
             Enable Web Search
@@ -176,10 +173,12 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
         </div>
       </div>
 
+      {/* Advanced settings toggle */}
       <div className="node-field">
         <button
           type="button"
           onClick={handleAdvancedSettingsToggle}
+          onMouseDown={(e) => e.stopPropagation()}
           style={{
             background: 'none',
             border: 'none',
@@ -196,6 +195,7 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
         </button>
       </div>
 
+      {/* Temperature slider */}
       {showAdvanced && (
         <div className="node-field">
           <label className="node-label" htmlFor={`temperature-${id}`}>
@@ -209,6 +209,7 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
             step="0.1"
             value={temperature}
             onChange={handleTemperatureChange}
+            onMouseDown={(e) => e.stopPropagation()}
             style={{ width: '100%' }}
           />
           <small style={{ color: '#666', fontSize: '0.75rem' }}>
@@ -216,7 +217,7 @@ const LLMEngineNode: React.FC<NodeProps<LLMEngineData>> = ({ data, id }) => {
           </small>
         </div>
       )}
-      
+
       {/* Output handle */}
       <Handle
         type="source"

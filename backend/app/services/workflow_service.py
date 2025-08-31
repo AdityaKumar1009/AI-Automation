@@ -220,6 +220,7 @@ class WorkflowService:
                     # Get document IDs and embedding API key from node configuration
                     document_ids = node_data.get("documentIds", [])
                     embedding_api_key = node_data.get("embeddingApiKey")
+                    print(f"Embedding API Key: {embedding_api_key}")
                     
                     if document_ids:
                         similar_content = await self.document_service.search_similar_content(

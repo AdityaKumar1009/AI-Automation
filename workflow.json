@@ -1,0 +1,28 @@
+{
+  "name": "Test Workflow",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "userQuery",
+      "data": { "query": "What is the capital of France?" }
+    },
+    {
+      "id": "2",
+      "type": "knowledgeBase",
+      "data": { "documentIds": [] }
+    },
+    {
+      "id": "3",
+      "type": "llmEngine",
+      "data": { 
+        "model": "gemini-pro",
+        "customPrompt": "You are a helpful assistant.",
+        "apiKey": "test-api-key"
+      }
+    }
+  ],
+  "edges": [
+    { "source": "1", "target": "2" },
+    { "source": "2", "target": "3" }
+  ]
+}

@@ -134,6 +134,7 @@ class LLMService:
                 raise Exception(f"Gemini API error: {response.status_code} - {response.text}")
             
             result = response.json()
+            print(f"Gemini API Response: {result}")
             
             # Extract the text from the response
             if "candidates" in result and len(result["candidates"]) > 0:

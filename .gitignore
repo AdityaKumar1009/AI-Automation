@@ -93,3 +93,5 @@ backend.log
 # ChromaDB data
 chroma_db/
 backend/chroma_db/
+backend/uploads
+

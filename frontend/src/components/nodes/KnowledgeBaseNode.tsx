@@ -18,6 +18,8 @@ const KnowledgeBaseNode: React.FC<NodeProps<KnowledgeBaseData>> = ({ data, id })
   const [documents, setDocuments] = useState(data.uploadedDocuments || []);
   const [isUploading, setIsUploading] = useState(false);
   const [embeddingApiKey, setEmbeddingApiKey] = useState(data.embeddingApiKey || '');
+  const embeddingApiKeyRef = useRef(embeddingApiKey);
+  embeddingApiKeyRef.current = embeddingApiKey;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +46,7 @@ const KnowledgeBaseNode: React.FC<NodeProps<KnowledgeBaseData>> = ({ data, id })
       try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('embedding_api_key', embeddingApiKey);
+        formData.append('embedding_api_key', embeddingApiKeyRef.current);
 
         const response = await fetch('http://localhost:8000/api/documents/upload', {
           method: 'POST',
