@@ -56,7 +56,7 @@ cp .env.example .env
 # Edit .env with your API keys and database URL
 
 # Run the server
-python main.py
+uvicorn main:app
 ```
 
 The backend will be available at `http://localhost:8000`
@@ -80,7 +80,7 @@ The frontend will be available at `http://localhost:3000`
 Create a `.env` file in the backend directory:
 
 ```env
-DATABASE_URL=postgresql://crazeformarvel:12345@localhost:5432/mydb2
+DATABASE_URL=postgresql://username:password@localhost:5432/mydb
 OPENAI_API_KEY=your_openai_api_key_here
 GOOGLE_API_KEY=your_google_api_key_here
 SERPAPI_KEY=your_serpapi_key_here
